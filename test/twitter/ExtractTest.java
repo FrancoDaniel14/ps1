@@ -6,7 +6,9 @@ package twitter;
 import static org.junit.Assert.*;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
@@ -14,20 +16,36 @@ import org.junit.Test;
 public class ExtractTest {
 
     /*
-     * TODO: your testing strategies for these methods should go here.
-     * See the ic03-testing exercise for examples of what a testing strategy comment looks like.
-     * Make sure you have partitions.
+     * Testing strategy
+     *
+     * Partition the inputs as follows:
+     * list.size(): 0, 1, > 1
+     * 
+     * Timespan: start = end, start < end
+     * 
+     * Exhaustive Cartesian coverage of partitions.
      */
     
-    private static final Instant d1 = Instant.parse("2016-02-17T10:00:00Z");
+    private static final List<Tweet> emptyList = new ArrayList<Tweet>(0);
+    
+    private static final Instant d1 = Instant.parse("2017-06-23T10:00:00Z");
+    
     private static final Instant d2 = Instant.parse("2016-02-17T11:00:00Z");
     
-    private static final Tweet tweet1 = new Tweet(1, "alyssa", "is it reasonable to talk about rivest so much?", d1);
+    private static final Tweet tweet1 = new Tweet(1, "daniel", "is it reasonable to talk about rivest so much?", d1);
     private static final Tweet tweet2 = new Tweet(2, "bbitdiddle", "rivest talk in 30 minutes #hype", d2);
     
     @Test(expected=AssertionError.class)
     public void testAssertionsEnabled() {
         assert false; // make sure assertions are enabled with VM argument: -ea
+    }
+    
+    @Test
+    public void testGetTimespanNoTweets() {
+        Timespan timespan = Extract.getTimespan(emptyList);
+        
+        assertEquals("expected start", Instant.EPOCH, timespan.getStart());
+        assertEquals("expected end", Instant.EPOCH, timespan.getEnd());
     }
     
     @Test

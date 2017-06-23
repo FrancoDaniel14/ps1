@@ -6,6 +6,7 @@ package twitter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,7 +46,10 @@ public class Main {
         } catch (AssertionError ae) { }
         
         final List<Tweet> tweets;
+        final List<Tweet> emptyList;
         try {
+            emptyList = new ArrayList<Tweet>(0);
+            emptyList.size();
             tweets = TweetReader.readTweetsFromWeb(SAMPLE_SERVER);
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
