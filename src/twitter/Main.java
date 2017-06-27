@@ -6,6 +6,7 @@ package twitter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -47,9 +48,32 @@ public class Main {
         
         final List<Tweet> tweets;
         final List<Tweet> emptyList;
+        final List<Tweet> oneElementList;
+        final List<Tweet> nonEmptyList;
+        
         try {
-            emptyList = new ArrayList<Tweet>(0);
-            emptyList.size();
+            emptyList = new ArrayList<Tweet>();
+            System.out.println(Extract.getTimespan(emptyList));
+
+            final Instant d1 = Instant.parse("2017-06-23T10:00:00Z");
+            final Tweet tweet1 = new Tweet(1, "daniel", "is it reasonable to talk about rivest so much?", d1);
+            
+            final Instant d2 = Instant.parse("2016-02-17T11:00:00Z");   
+            final Tweet tweet2 = new Tweet(2, "bbitdiddle", "rivest talk in 30 minutes #hype", d2);
+            
+            final Instant d3 = Instant.parse("2017-06-23T10:00:00Z");   
+            final Tweet tweet3 = new Tweet(3, "raul", "Jesus is Lord", d3);
+            
+            oneElementList = new ArrayList<Tweet>();
+            oneElementList.add(tweet1);
+            System.out.println(Extract.getTimespan(oneElementList));
+            
+            nonEmptyList = new ArrayList<Tweet>();    
+            nonEmptyList.add(tweet1);
+            nonEmptyList.add(tweet2);
+            nonEmptyList.add(tweet3);            
+            System.out.println(Extract.getTimespan(nonEmptyList));
+            
             tweets = TweetReader.readTweetsFromWeb(SAMPLE_SERVER);
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);

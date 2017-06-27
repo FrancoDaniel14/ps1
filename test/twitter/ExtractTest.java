@@ -26,14 +26,16 @@ public class ExtractTest {
      * Exhaustive Cartesian coverage of partitions.
      */
     
-    private static final List<Tweet> emptyList = new ArrayList<Tweet>(0);
+    private static final List<Tweet> emptyList = new ArrayList<Tweet>();
     
     private static final Instant d1 = Instant.parse("2017-06-23T10:00:00Z");
-    
-    private static final Instant d2 = Instant.parse("2016-02-17T11:00:00Z");
-    
     private static final Tweet tweet1 = new Tweet(1, "daniel", "is it reasonable to talk about rivest so much?", d1);
+    
+    private static final Instant d2 = Instant.parse("2016-02-17T11:00:00Z");   
     private static final Tweet tweet2 = new Tweet(2, "bbitdiddle", "rivest talk in 30 minutes #hype", d2);
+    
+    private static final Instant d3 = Instant.parse("2017-06-23T10:00:00Z");   
+    private static final Tweet tweet3 = new Tweet(3, "raul", "Jesus is Lord", d3);
     
     @Test(expected=AssertionError.class)
     public void testAssertionsEnabled() {
@@ -49,11 +51,19 @@ public class ExtractTest {
     }
     
     @Test
-    public void testGetTimespanTwoTweets() {
-        Timespan timespan = Extract.getTimespan(Arrays.asList(tweet1, tweet2));
+    public void testGetTimespanOneTweet() {
+        Timespan timespan = Extract.getTimespan(Arrays.asList(tweet1));
         
         assertEquals("expected start", d1, timespan.getStart());
-        assertEquals("expected end", d2, timespan.getEnd());
+        assertEquals("expected end", d1, timespan.getEnd());
+    }
+    
+    @Test
+    public void testGetTimespanMoreThanOneTweets() {
+        Timespan timespan = Extract.getTimespan(Arrays.asList(tweet1, tweet2, tweet3));
+        
+        assertEquals("expected start", d2, timespan.getStart());
+        assertEquals("expected end", d3, timespan.getEnd());
     }
     
     @Test
